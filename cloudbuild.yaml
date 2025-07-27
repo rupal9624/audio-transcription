@@ -1,0 +1,52 @@
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+steps:
+# Configure Docker to use Artifact Registry
+- id: 'configure-docker'
+  name: 'gcr.io/cloud-builders/gcloud'
+  args: ['auth', 'configure-docker', 'us-central1-docker.pkg.dev']
+
+# Build the Docker image
+- id: 'build-docker-image'
+  name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'us-central1-docker.pkg.dev/practice-project-467102/audio-transcription/audio-transcription:$SHORT_SHA', '.']
+
+# Push the Docker image to Artifact Registry
+- id: 'push-to-artifact-registry'
+  name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'us-central1-docker.pkg.dev/practice-project-467102/audio-transcription/audio-transcription:$SHORT_SHA']
+
+# Deploy image to Cloud Run
+- id: 'deploy-to-cloud-run'
+  name: 'gcr.io/cloud-builders/gcloud'
+  args:
+  - 'run'
+  - 'deploy'
+  - 'audio-transcription'
+  - '--image'
+  - 'us-central1-docker.pkg.dev/practice-project-467102/audio-transcription/audio-transcription:$SHORT_SHA'
+  - '--region'
+  - 'us-central1'
+  - '--platform'
+  - 'managed'
+  - '--allow-unauthenticated'
+  - '--add-cloudsql-instances'
+  - 'practice-project-467102:us-central1:practice-sqlv'
+  - '--service-account'
+  - 'audio-transcription-sa@practice-project-467102.iam.gserviceaccount.com'
+  - '--set-env-vars'
+  - 'INSTANCE_CONNECTION_NAME=practice-project-467102:us-central1:practice-sql,DATABASE_HOST=/cloudsql/practice-project-467102:us-central1:practice-sql,DATABASE_PORT=5432,DATABASE_NAME=practice-sql,DATABASE_USER=postgres,PROJECT_ID=practice-project-467102,DOC_BUCKET_NAME=audio-transcription'
+  - '--memory=8Gi'
+  - '--cpu=4'
+  - '--max-instances=5'
+  - '--timeout=3600'
+  - '--concurrency=1'  # ensures 1 request per instance for large model safety
+  secretEnv: [
+    'DATABASE_PASSWORD'
+  ]
+
+availableSecrets:
+  secretManager:
+  - versionName: projects/267530999885/secrets/postgres-db-password/versions/latest
+    env: 'DATABASE_PASSWORD'
