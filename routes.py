@@ -12,7 +12,6 @@ from utils.gcs_utils import (
 )
 from utils.whisper_utils import transcribe_audio_in_chunks
 from utils.pubsub_processing_utils import publish_to_pubsub
-from utils.template_utils import fetch_json_template
 from utils.open_ai_utils import fill_json_with_llm
 
 executor = ThreadPoolExecutor(max_workers=4)
