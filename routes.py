@@ -80,14 +80,10 @@ def _background_process(form_id, audio_id, recording_name, job_id, session_id):
                 "schema": {
                     "type": "object",
                     "properties": {
-                        "form_id": {"type": "string"},
-                        "oasis_audio_id": {"type": "string"},
                         "recording_name": {"type": "string", "format": "uri"}
                     },
-                    "required": ["form_id", "oasis_audio_id", "recording_name"],
+                    "required": ["recording_name"],
                     "example": {
-                        "form_id": "FORM123",
-                        "oasis_audio_id": "AUDIO567",
                         "recording_name": "https://storage.googleapis.com/.../rec.wav"
                     }
                 }
@@ -105,19 +101,17 @@ def _background_process(form_id, audio_id, recording_name, job_id, session_id):
 })
 def process_audio():
     payload = request.get_json(force=True)
-    form_id = payload.get("form_id")
-    audio_id = payload.get("oasis_audio_id")
     recording_name = payload.get("recording_name")
 
-    if not (form_id and audio_id and recording_name):
-        return jsonify(error="Missing 'form_id', 'oasis_audio_id', or 'recording_name'"), 400
+    if not (recording_name):
+        return jsonify(error="Missing 'recording_name'"), 400
 
     session_id = f"session-{uuid.uuid4().hex[:12]}"
-    job_id = f"{form_id}-{uuid.uuid4().hex[:8]}"
+    job_id = f"{uuid.uuid4().hex[:8]}"
     set_job_status(job_id, "pending")
     _sessions[session_id] = job_id
 
-    executor.submit(_background_process, form_id, audio_id, recording_name, job_id, session_id)
+    executor.submit(_background_process, recording_name, job_id, session_id)
 
     def event_stream():
         yield f"Started job: {job_id}, session: {session_id}\n"
