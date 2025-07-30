@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "practice-project-467102",
+  "private_key_id": "ff61f6224bb237a5c7ca3923d047cf64a2424774",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCVwXlo7kz7n+DH\n2l8BqPjfq15hY1G13Z6DgVH7m0qwe39yUcrMtK1lbFzQH14oSXa1x1Kpmopyyste\nqaYh5NeG4ODAeSGgf0/khLXq93MVu7t5OG0ylXEHiXmiz/iU/tiPU91c8POjjik1\n3ghTRw4ihH8F9YCaeDlxfwqKX79yQbVq5xmTEz3J5jO/sd8ewhNysWflun8LM05z\nsSoCcXYBAH/V1d58AGmno329WBIPeM4vAHhqB/n2/fuZ14u628Rt7ZwMTda85V+V\nA1QBSvWMw+Q0wY2kNUf06FHXimnDjpTZ4Mpn7zZ3pFwjFeLeKmzkKy9s+xOWSK7j\n/7rXY571AgMBAAECgf9n2Ew7szfI8RyC8aPbDUkeYw1BCCiZRUERQ1+jUIbqsIRz\nxDRXpPy3uKOzO1uPf0zpq5n3qVRyNdUe0g0q+4e8zk29Xmu291gOlCyCSBUQSM0N\nx0S4EDxywXGPlutuCEUZFAbH3II68ANVT2CwALzucVWZcNClZvzMa1kK/m8ZZNqY\ndfB4k3CiJm4QTcmG4s6NtrtWgpV1YvOfmCSS+Jq/iXKThrPEbHhH4Dl6q/n7OiAB\nab/blP77j35TSo3gha9yhxPpYly/DQqvRB1K/p23yOnETQKiFlDhuvCfJVFgEVvT\nLj4xOtLztlym5Qfrf/sGBnEB90RdDHvWlRlmnzECgYEAxp2JZZQ6fjs7iE42e7HY\np8vMzsh5s7X2381qsuJIzGGXTog5Hzllm1RhnvYtdmtsUxO0BGSuIv1vgdAbmLxz\nJSCjEhhG2KtvkUaHgdFJmNVsBGCtwEpFt1g83VfxV0UITpmEsIzj+u2nS0kYe3Q0\nG0gQp624bjmY+U8Ty2S8Bm0CgYEAwQYQ7Yb/uYf9DpSFJ07OEb23QtpVMwgr2GSn\nIME6jIJDIuzTAyydfs3HFEGGiexyvsFgyi9e0X7tTizIli2MhpC/V1UOHeo44bbx\nvnUoF125O3WA2qVjG7rfTbtDGuVMXwoQGiva1xiOPAuE34HM6Bj36WxbMSb2RKiW\ntPqoRakCgYEAjBCC2XC8A1MwO4K0p2yXFlYBu/3i3ZpAXDnXugkcP42/D3G/nsZy\nYiUSpvCCxRUikj+93q9FooVJgqlJHOAg75jhhxw5sgjMKA4t952pIi+3+ipXvdhi\n69Y9LfcbymhzYEKhMYRaLhY0uUH2EvGy4V5j6Gv5OTpDJ+XdVr1WX80CgYEAsoMr\nsKDDbBCKRquwoXPOPLYaAGfvl6yc8BnWPwK1ZTEraedgF3Vxis5AqUkYZgIY9LXf\nD93TcShTy5K7R7iEWAcSDnCJB72QMZ+B30R2eXWiU40OSCfgisq+riLbosohYVvr\nHGkmkPsSwBFfJ13h5V0CGgyuIb0I0OKhzmpqqVECgYBnhyo1QZV3Hi8AYG5h6KEC\nnNWoMTk1z7wBeQWEoNkifLmN9Dnt78ITtKsKvCiLlJF8bSS1mkYQ0rZpcF2hET0w\ncDVTHoPJ9eiQGHqNyWoFHZLDdNWeLYgjHUVANN/wNoY4nZyr8m/UKj4b5sp+XREP\nck/v3KRcetWF+GO5slGuNQ==\n-----END PRIVATE KEY-----\n",
+  "client_email": "audio-transcription-sa@practice-project-467102.iam.gserviceaccount.com",
+  "client_id": "116255244703644069389",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/audio-transcription-sa%40practice-project-467102.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

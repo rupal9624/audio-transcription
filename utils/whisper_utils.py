@@ -68,7 +68,7 @@ def transcribe_audio(file_path: str, model_size: str = "base") -> str:
 
 def transcribe_audio_in_chunks(file_path: str, model_size=None, chunk_seconds=30, session_id=None, recording_name=None) -> str:
     from utils.gcs_utils import upload_transcript_chunk_to_gcs, merge_transcript_chunks
-    from utils.pubsub_processing_utils import publish_to_pubsub
+    #from utils.pubsub_processing_utils import publish_to_pubsub
 
     model_size = model_size or auto_select_model()
     logger.info("Chunked transcription started: %s [%s]", file_path, model_size)
@@ -99,7 +99,7 @@ def transcribe_audio_in_chunks(file_path: str, model_size=None, chunk_seconds=30
             end = min(i + chunk_seconds, total_duration)
             chunk_waveform = waveform[:, int(start * sr):int(end * sr)]
 
-            with tempfile.NamedTemporaryFile(suffix=".wav", delete=True) as tmp_chunk:
+            with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmp_chunk:
                 torchaudio.save(tmp_chunk.name, chunk_waveform, sr)
                 try:
                     result = model.transcribe(tmp_chunk.name)
@@ -115,8 +115,9 @@ def transcribe_audio_in_chunks(file_path: str, model_size=None, chunk_seconds=30
     if session_id:
         try:
             merge_result = merge_transcript_chunks(session_id, file_path, recording_name)
-            publish_to_pubsub(form_id=session_id, recording_name=merge_result['url'])
+            #publish_to_pubsub(form_id=session_id, recording_name=merge_result['url'])
             merged_text = merge_result['text']
+            logger.info("Auto-merged all transcript chunks for merged_text: %s", merged_text)
             logger.info("Auto-merged all transcript chunks for session_id: %s", session_id)
         except Exception as merge_exc:
             logger.error("Failed to auto-merge transcript for session %s: %s", session_id, str(merge_exc))

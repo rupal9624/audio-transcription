@@ -27,6 +27,7 @@ if SA_KEY_PATH:
     creds = service_account.Credentials.from_service_account_file(
         SA_KEY_PATH, scopes=["https://www.googleapis.com/auth/cloud-platform"]
     )
+    logger.info("SA_KEY_PATH creds: %s", creds)
     storage_client = storage.Client(credentials=creds, project=GCP_PROJECT_ID)
 else:
     storage_client = storage.Client()
@@ -57,6 +58,7 @@ def download_audio(recording_name: str) -> str:
     """Download an audio blob and return the local file path."""
     blob_path = parse_blob_path(recording_name)
     logger.info("Downloading from: %s", blob_path)
+    logger.info("SA_KEY_PATH: %s", SA_KEY_PATH)
     bucket = storage_client.bucket(GCP_BUCKET_NAME)
     blob = bucket.blob(blob_path)
     if not blob.exists():
@@ -132,16 +134,21 @@ def merge_transcript_chunks(session_id: str, local_audio: str = None, recording_
 
 def transcript_exists(recording_name: str) -> bool:
     """Check if final transcript already exists in GCS."""
+    logger.info("Checking for transcript: %s", recording_name)
     clean_name = extract_filename(recording_name)
+    logger.info("Clean name: %s", clean_name)
     base = os.path.splitext(clean_name)[0]
     blob_path = f"{TRANSCRIPT_BUCKET_PATH}/{base}.txt"
+    logger.info("File name: %s", blob_path)
     return exists_in_bucket(blob_path)
 
 
 def exists_in_bucket(blob_path: str) -> bool:
     """Check if blob exists in GCS bucket."""
+    logger.info("GCP_BUCKET_NAME: %s", GCP_BUCKET_NAME)
     bucket = storage_client.bucket(GCP_BUCKET_NAME)
     blob = bucket.blob(blob_path)
+    logger.info("File exists: %s", blob.exists())
     return blob.exists()
 
 

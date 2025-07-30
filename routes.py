@@ -11,8 +11,8 @@ from utils.gcs_utils import (
     upload_transcript, transcript_exists, get_transcript_content
 )
 from utils.whisper_utils import transcribe_audio_in_chunks
-from utils.pubsub_processing_utils import publish_to_pubsub
-from utils.open_ai_utils import fill_json_with_llm
+# from utils.pubsub_processing_utils import publish_to_pubsub
+# from utils.open_ai_utils import fill_json_with_llm
 
 executor = ThreadPoolExecutor(max_workers=4)
 logger = logging.getLogger("oasis-transcription")
@@ -39,15 +39,16 @@ def cancel_job(job_id):
     set_job_status(job_id, "cancelled")
 
 
-def _background_process(form_id, audio_id, recording_name, job_id, session_id):
+def _background_process(recording_name, job_id, session_id):
     logger.info("Background started: job=%s, session=%s", job_id, session_id)
-    if transcript_exists(recording_name):
-        set_job_status(job_id, "done")
-        publish_to_pubsub(form_id, recording_name)
-        return
+    #if transcript_exists(recording_name):
+        #set_job_status(job_id, "done")
+        # publish_to_pubsub(form_id, recording_name)
+        #return
 
     set_job_status(job_id, "running")
     try:
+        logger.info("downloading recording=%s, session=%s", recording_name, session_id)
         local_audio = download_audio(recording_name)
         if get_job_status(job_id) == "cancelled":
             return
@@ -61,7 +62,7 @@ def _background_process(form_id, audio_id, recording_name, job_id, session_id):
 
         upload_transcript(local_audio, transcript, recording_name)
         set_job_status(job_id, "done")
-        publish_to_pubsub(form_id, f"{os.path.splitext(recording_name)[0]}.txt")
+        # publish_to_pubsub(form_id, f"{os.path.splitext(recording_name)[0]}.txt")
     except GCSFileNotFoundError as e:
         logger.error("Background job %s error: %s", job_id, e)
         set_job_status(job_id, "error")
@@ -102,6 +103,7 @@ def _background_process(form_id, audio_id, recording_name, job_id, session_id):
 def process_audio():
     payload = request.get_json(force=True)
     recording_name = payload.get("recording_name")
+    logger.info("Recording name received  %s ", recording_name)
 
     if not (recording_name):
         return jsonify(error="Missing 'recording_name'"), 400
